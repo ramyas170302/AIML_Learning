@@ -1,0 +1,36 @@
+Machine Learning
+│
+├── Supervised Learning
+│   │
+│   ├── Regression
+│   │   ├── Linear Regression
+│   │   ├── Polynomial Regression
+│   │   ├── Ridge Regression
+│   │   └── Lasso Regression
+│   │
+│   └── Classification
+│       ├── Logistic Regression
+│       ├── K-Nearest Neighbors (KNN)
+│       ├── Decision Tree
+│       ├── Random Forest
+│       ├── Support Vector Machine (SVM)
+│       └── Naive Bayes
+│
+├── Unsupervised Learning
+│   │
+│   ├── Clustering
+│   │   ├── K-Means Clustering
+│   │   ├── DBSCAN
+│   │   └── Hierarchical Clustering
+│   │
+│   └── Dimensionality Reduction
+│       ├── PCA (Principal Component Analysis)
+│       ├── t-SNE
+│       └── LDA
+│
+└── Reinforcement Learning
+    │
+    ├── Q-Learning
+    ├── Deep Q Network (DQN)
+    ├── SARSA
+    └── Policy Gradient
