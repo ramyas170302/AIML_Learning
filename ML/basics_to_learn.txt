@@ -10,8 +10,8 @@ Machine Learning
 │   │
 │   └── Classification
 │       ├── Logistic Regression
-│       ├── K-Nearest Neighbors (KNN)
-│       ├── Decision Tree
+│       ├── K-Nearest Neighbors (KNN)   
+│       ├── Decision Tree   
 │       ├── Random Forest
 │       ├── Support Vector Machine (SVM)
 │       └── Naive Bayes

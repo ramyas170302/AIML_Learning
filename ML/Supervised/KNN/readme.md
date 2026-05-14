@@ -4,7 +4,6 @@ Practical ML implementations using scikit-learn.
 
 ## Concepts Covered
 - KNN (K-Nearest Neighbors)
-- Linear Regression
 - Feature selection and label encoding
 - Train/test split
 - Training accuracy vs testing accuracy
