@@ -9,7 +9,7 @@ import numpy as np
 
 
 #load csv database
-df=pd.read_csv("DataBase.csv")
+df = pd.read_csv("ML/Supervised/Mini_ML_Proj/DataBase.csv")
 
 
 
