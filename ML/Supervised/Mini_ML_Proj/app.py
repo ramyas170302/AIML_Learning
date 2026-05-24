@@ -116,7 +116,7 @@ if st.button("Predict"):
         res = predict[0]
 
         if res == 1:
-            st.warning("⚠ Medium Risk Detected")
+            st.error("⚠ Medium Risk Detected")
             st.write("Some lifestyle habits may require improvement.")
             st.write("Try reducing stress, limiting screen time, and improving sleep quality.")
 
