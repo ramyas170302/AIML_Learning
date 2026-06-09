@@ -4,10 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 #from sklearn.metrics import confusion_matrix,f1_score,accuracy_score
 
-import os
 
-BASE_DIR = os.path.dirname(__file__)
-file_path = os.path.join(BASE_DIR, "loan_approval_dataset.csv")
 
 df = pd.read_csv("loan_approval_dataset.csv")
 df.columns = df.columns.str.strip()
