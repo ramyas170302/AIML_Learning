@@ -1,6 +1,6 @@
 import streamlit as st
 import time as time
-import Loan
+from Loan import *
 
 st.header("🏦 Smart Loan Approval Predictor")
 st.markdown(" ##### Predict whether a loan application is likely to be approved based on applicant details.")
