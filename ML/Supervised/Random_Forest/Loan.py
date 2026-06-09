@@ -9,7 +9,7 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 file_path = os.path.join(BASE_DIR, "loan_approval_dataset.csv")
 
-df = pd.read_csv(file_path)
+df = pd.read_csv("loan_approval_dataset.csv")
 df.columns = df.columns.str.strip()
 df.drop("loan_id",axis=1,inplace=True)
 #encode
