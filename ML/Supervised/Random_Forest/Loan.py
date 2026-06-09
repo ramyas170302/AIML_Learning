@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix,f1_score,accuracy_score
+#from sklearn.metrics import confusion_matrix,f1_score,accuracy_score
 
 df=pd.read_csv("loan_approval_dataset.csv")
 
