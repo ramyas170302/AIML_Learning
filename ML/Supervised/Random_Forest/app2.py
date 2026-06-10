@@ -1,6 +1,6 @@
 import streamlit as st
 import time as time
-import Loan as Loan 
+import model as model 
 
 st.header("🏦 Smart Loan Approval Predictor")
 st.markdown(" ##### Predict whether a loan application is likely to be approved based on applicant details.")
@@ -41,7 +41,7 @@ if st.button("Predict Loan Status"):
     st.divider()
     with st.spinner("Loading...."):
         time.sleep(2)
-        predict = Loan.model.predict(new_data)
+        predict = model.model.predict(new_data)
         res = predict[0]
         if res==1:
             st.success("✅ Loan Approved")
