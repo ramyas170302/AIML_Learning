@@ -1,18 +1,20 @@
-import pandas as pd
+
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix,accuracy_score
 import numpy as np
+import os
+import pandas as pd
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(BASE_DIR, "DataBase.csv")
 
+print("CSV Path:", csv_path)
+print("Exists:", os.path.exists(csv_path))
 
-#load csv database
-df = pd.read_csv("DataBase.csv")
-
-
-
+df = pd.read_csv(csv_path)
 #encoding
 encoder=LabelEncoder()
 df["StressLevel"]=encoder.fit_transform(df["StressLevel"])

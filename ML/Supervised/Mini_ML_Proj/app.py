@@ -2,8 +2,13 @@ import streamlit as st
 import pandas as pd
 import model as model
 import time 
+import os
 
-st.image("logo.png", width=200)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+logo_path = os.path.join(BASE_DIR, "logo.png")
+
+st.image(logo_path, width=200)
+
 
 st.sidebar.header("🤖 Algorithm")
 st.sidebar.write("Decision Tree Classifier")
