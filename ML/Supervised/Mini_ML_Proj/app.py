@@ -3,7 +3,7 @@ import pandas as pd
 import model as model
 import time 
 
-st.image("ML/Supervised/Mini_ML_Proj/logo.png", width=200)
+st.image("logo.png", width=200)
 
 st.sidebar.header("🤖 Algorithm")
 st.sidebar.write("Decision Tree Classifier")
