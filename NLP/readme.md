@@ -111,19 +111,8 @@ Delhi      → LOCATION
 
 ---
 
-## Installation
 
-Clone the repository:
 
-```bash
-git clone https://github.com/your-username/NLP-Text-Preprocessing-Pipeline.git
-```
-
-Install dependencies:
-
-```bash
-pip install nltk
-```
 
 ---
 
