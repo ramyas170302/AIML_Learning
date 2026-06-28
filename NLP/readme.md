@@ -112,9 +112,12 @@ Delhi      → LOCATION
 ---
 
 
+<<<<<<< HEAD
 
 
 ---
+=======
+>>>>>>> 1ec9f94cf71eac69868698999acc40d0d7188be4
 
 ## Required NLTK Resources
 
