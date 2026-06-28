@@ -5,8 +5,16 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 
-model=pickle.load(open("model.pkl","rb"))
-tfidf=pickle.load(open("tfidf.pkl","rb"))
+from pathlib import Path
+import pickle
+
+BASE_DIR = Path(__file__).parent
+
+with open(BASE_DIR / "model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+with open(BASE_DIR / "tfidf.pkl", "rb") as f:
+    tfidf = pickle.load(f)
 
 
 st.header("Spam Message Detector")
