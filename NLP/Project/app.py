@@ -8,9 +8,7 @@ from nltk.stem import WordNetLemmatizer
 from pathlib import Path
 import pickle
 
-nltk.download("punkt")
-nltk.download("punkt_tab")
-nltk.download("punkt")
+
 nltk.download("stopwords")
 nltk.download("wordnet")
 nltk.download("averaged_perceptron_tagger_eng")
@@ -41,7 +39,7 @@ if st.button("Predict"):
         message=message.lower()
 
         #word tokenization
-        words=nltk.word_tokenize(message)
+        words = message.split()
 
         #remove stop words
         filter_words=[]
