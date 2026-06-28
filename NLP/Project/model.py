@@ -8,6 +8,14 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score,confusion_matrix
 import pickle
 
+
+
+nltk.download("punkt_tab")
+nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("wordnet")
+nltk.download("averaged_perceptron_tagger_eng")
+
 df=pd.read_csv("spam.csv")
 print(df.info())
 print(df.head(5))
@@ -24,11 +32,7 @@ print(df.describe)
 df["message"]=df["message"].apply(lambda x:x.lower())
 print(df["Label"].value_counts())
 
-#sentence Tokenzier
-'''sentence_tokenize=[]
-for message in df["message"]:
-    sent=nltk.sent_tokenize(message)
-    sentence_tokenize.append(sent)'''
+
 
 #Word Tokenzier
 word_tokenize=[]
