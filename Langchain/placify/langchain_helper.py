@@ -4,7 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 import os
-load_dotenv()
+load_dotenv(load_dotenv(dotenv_path=r"D:\AIML\.env"))
 
 
 

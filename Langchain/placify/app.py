@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from langchain_helper import(
     generate_career,
     generate_interview,
@@ -8,14 +9,13 @@ from langchain_helper import(
 
 st.set_page_config(
     page_title="Placify",
-    page_icon="logo.png",
     layout="wide"
 )
 
 
 with st.sidebar:
 
-    st.image("logo.png", width=500)
+    
 
     st.title("Placify")
 
@@ -53,12 +53,9 @@ Built with:
     )
 
 
-col1,col2=st.columns([1,6])
-with col1:
-    st.image("logo.png",width=50000)
-with col2:
-    st.header("Placify")
-    st.caption("Learn. Practice. Get Hired.")
+
+st.header("Placify")
+st.caption("Learn. Practice. Get Hired.")
 
 st.divider()
 
