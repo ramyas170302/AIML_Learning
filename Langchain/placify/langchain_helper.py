@@ -3,10 +3,17 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
+import streamlit as st
 import os
-load_dotenv(load_dotenv(dotenv_path=r"D:\AIML\.env"))
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
 
 
+load_dotenv(dotenv_path=r"D:\AIML\Langchain\placify\.env")
+
+api_key = os.getenv("GROQ_API_KEY")
 
 parser=StrOutputParser()
 llm=ChatGroq(
@@ -243,12 +250,99 @@ Writing Style Rules:
 - Give practical and actionable advice.                                                    
 """)
 
+company_experience_prompt = ChatPromptTemplate.from_template("""
+You are an experienced Placement Mentor with knowledge of software company hiring processes.
+
+Your goal is to help engineering students prepare for placements.
+
+Student Details
+
+🏢 Company: {company}
+
+💼 Target Role: {role}
+
+❓ Student Question:
+{question}
+
+Instructions:
+
+1. Read the student's question carefully.
+
+2. Answer ONLY the student's question.
+
+3. Do NOT explain the complete interview process unless the student specifically asks for it.
+
+4. Provide company-specific information whenever possible.
+
+5. If the exact information for the company is unavailable, clearly mention that interview patterns may vary and provide the closest industry-standard information.
+
+6. Never invent facts or guarantee that a question will definitely be asked.
+
+7. If the question is about DSA, include:
+   - Difficulty level
+   - Number of coding questions (if commonly known)
+   - Important DSA topics
+   - Expected problem-solving level
+   - Preparation strategy
+
+8. If the question is about Technical Interview, include:
+   - Important subjects
+   - Frequently asked concepts
+   - Coding expectations
+   - Practical preparation tips
+
+9. If the question is about HR Interview, include:
+   - Common HR questions
+   - Behavioural questions
+   - Communication tips
+
+10. If the question is about Aptitude, include:
+    - Topics
+    - Difficulty
+    - Preparation resources
+
+11. If the question is about Projects, explain:
+    - What kind of projects are expected
+    - Important project questions
+    - How to explain projects confidently
+
+12. If the student asks for interview rounds, explain only:
+    - Round names
+    - Purpose of each round
+    - What to prepare
+
+13. If the student asks about AI/ML or LLM roles, mention:
+    - Required skills
+    - Expected projects
+    - Coding requirements
+    - Interview focus areas
+
+14. Keep the answer practical and placement-oriented.
+
+Writing Style Rules:
+
+- Use Markdown headings.
+- Use bullet points.
+- Use simple English.
+- Keep sentences short.
+- Use suitable emojis naturally (🏢 💻 📚 🚀 ✅ 🎯).
+- Never use tables.
+- Never give unrelated information.
+- Never repeat the student's question.
+- Give practical preparation tips at the end.
+- End with one short motivational sentence.
+
+Remember:
+Your job is to answer exactly what the student asked, not to write an entire article about the company.
+""")
+
 #chain
 
 career_chain=career_prompt | llm | parser
 answer_review_chain= answer_review_prompt | llm |parser
 interview_chain=interview_prompt | llm |parser
 study_plan_chain=study_plan_prompt |llm |parser
+company_experience_chain= company_experience_prompt | llm |parser
 
 def generate_career(job,package,year,skills):
     response=career_chain.invoke(
@@ -305,3 +399,95 @@ def generate_study_plan(target_role, current_skills, study_hours, days_available
     return response
 
 
+def process_pdf(uploaded_file):
+    # create folder to add the uploaded file
+    os.makedirs("uploads", exist_ok=True)
+
+    #Create file path because PypdfLoader (loaders) need fil path 
+    file_path = os.path.join("uploads", uploaded_file.name)
+
+    #save the uploaded File
+    with open(file_path,"wb") as f:
+        f.write(uploaded_file.getbuffer())
+
+    #Document Structure
+    loader=PyPDFLoader(file_path)
+    document=loader.load()
+    #st.write(document)
+
+    #Text Splitter
+    text_splitter=RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    )
+    chunks=text_splitter.split_documents(document)
+
+    # create embedding 
+    embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/gemini-embedding-001",
+    google_api_key=os.getenv("GOOGLE_API_KEY")
+    )
+
+    vector_store=FAISS.from_documents(
+        chunks,
+        embeddings
+    )
+
+    vector_store.save_local("faiss_index")
+
+def ask_pdf(question):
+    embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/gemini-embedding-001",
+    google_api_key=os.getenv("GOOGLE_API_KEY")
+    )
+    vector_store=FAISS.load_local(
+        "faiss_index",
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+
+    doc=vector_store.similarity_search(question)
+    doc=doc[0].page_content
+
+    pdf_prompt = ChatPromptTemplate.from_template("""
+    You are an AI Placement Mentor.
+
+    Answer the user's question using ONLY the information provided in the context.
+
+    If the answer is not available in the context, simply say:
+
+    "I couldn't find this information in the uploaded document."
+
+    Context:
+    {context}
+
+    Question:
+    {question}
+
+    Instructions:
+    - Give a clear and accurate answer.
+    - Use simple English.
+    - If possible, explain with bullet points.
+    - Do not make up information.
+    - Answer only from the given context.
+
+    Answer:
+    """)
+    pdf_chain=pdf_prompt | llm | parser
+
+    response=pdf_chain.invoke(
+        {
+            "context":doc,
+            "question":question
+        }
+    )
+    return response
+    
+def generate_company(company,role,question):
+    response=company_experience_chain.invoke({
+        "company":company,
+        "role":role,
+        "question":question
+    }
+    )
+    return response

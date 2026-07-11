@@ -4,3 +4,7 @@ langchain-core
 langchain-groq
 langsmith
 python-dotenv
+langchain-community
+faiss-cpu
+pypdf
+langchain_google_genai

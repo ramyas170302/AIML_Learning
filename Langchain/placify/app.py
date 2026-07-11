@@ -4,7 +4,10 @@ from langchain_helper import(
     generate_career,
     generate_interview,
     review_answer,
-    generate_study_plan
+    generate_study_plan,
+    process_pdf,
+    ask_pdf,
+    generate_company
 )
 
 st.set_page_config(
@@ -78,7 +81,7 @@ st.divider()
 
 st.write("## Choose a Feature")
 
-col1, col2 = st.columns(2)
+col1, col2 ,col3 = st.columns(3)
 
 with col1:
     if st.button("🛣 Career Roadmap"):
@@ -93,6 +96,13 @@ with col2:
 
     if st.button("📅 Study Planner"):
         st.session_state.page = "study"
+    
+with col3:
+    if st.button ("📚 Placement Knowledge"):
+        st.session_state.page="Knowledge"
+
+    if st.button ("🏢 Company Experience"):
+        st.session_state.page="company"
 
 
 # ------------------------------
@@ -304,5 +314,63 @@ if st.session_state.page=="study":
             st.markdown(response)
 
 
+# ------------------------------
+# Placement Knowledge Page
+# ------------------------------
+
+if st.session_state.page =="Knowledge":
+    uploaded_file=st.file_uploader(
+                "📄 Upload your placement notes (pdf)",
+                type=["pdf"]
+            )
+   
+    
+    if uploaded_file is not None:
+            st.success("✅ File uploaded successfully!")
+            st.write(" #### Uploaded file:")
+            st.write(uploaded_file.name)
+            question=st.text_area(
+                "Ask Your Question:",
+                placeholder="Example:What is DeadLock?"
+                )
+            if st.button("Get Answer"):
+                if question:
+                    process_pdf(uploaded_file)
+                    answer=ask_pdf(question=question)
+                    st.markdown(answer)
+                else:
+                    st.warning("Please enter the question!")
+    else:
+        st.info("Please Upload a file to continue...")   
 
 
+# ------------------------------
+# company experience Page
+# ------------------------------
+           
+
+if st.session_state.page=="company":
+    company=st.text_area("Enter the company name",
+                         placeholder="eg:google,microsoft,wipro")
+    role=st.text_area("enter your preparing role",
+                      placeholder="eg:AI engineer,Web Developer")
+
+    question=st.selectbox(
+        "What do You Want To know?",
+        ("Interview Process","DSA Coding","HR Question",
+         "Tecnical Subject","AI/LLM Topic","Projects Expected","Resume Tips",
+         "Salary & Package")
+    )
+    if st.button("submit"):
+        if not company:
+            st.warning("please enter the comapny")
+        elif not role:
+            st.warning("please enter the role")
+        elif not question:
+            ("please enter the question !!")
+        else:
+            with st.spinner("generating Response...."):
+                fun=generate_company(company=company,
+                                role=role,
+                                question=question)
+                st.markdown(fun)
